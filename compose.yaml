@@ -1,0 +1,9 @@
+services:
+  webserver:
+    image: ubuntu-webserver
+    ports:
+      - "4000:80"
+    volumes:
+      - type: bind
+        source: 'C:\Apache\htdocs'
+        target: /var/www/html
