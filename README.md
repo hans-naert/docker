@@ -58,7 +58,7 @@ container:
 
 ```powershell
 .\build-docker.ps1 ubuntu-apt-update.Dockerfile
-docker run -it ubuntu-apt-update apt-get -y install apache2 php
+docker run -it --name php-install ubuntu-apt-update apt-get -y install apache2 php
 ```
 
 `-it` koppelt de invoer en een terminal aan de container, zodat je
@@ -67,28 +67,27 @@ bijvoorbeeld over de tijdzone. `-y` beantwoordt de
 pakketinstallatiebevestiging automatisch, maar niet noodzakelijk alle
 configuratievragen. Het opgegeven commando start geen interactieve shell.
 Na de installatie stopt de container, maar hij blijft bestaan omdat `--rm`
-niet is opgegeven.
+niet is opgegeven. Met `--name php-install` krijgt de container een naam
+die je later kunt gebruiken in plaats van het container-ID.
 
 ### 2. Zoek de container
 
 Wacht tot de installatie is voltooid. Toon ook de gestopte containers en
-zoek de container van dit commando:
+zoek de container met de naam `php-install`:
 
 ```powershell
 docker ps -a
 ```
 
-Zoek de regel met image `ubuntu-apt-update` en controleer dat de container
-succesvol is gestopt (`Exited (0)`). Kopieer het ID uit de kolom
-`CONTAINER ID`.
+Controleer dat de container succesvol is gestopt (`Exited (0)`). De lijst
+toont ook het container-ID, maar dat heb je hier niet nodig.
 
 ### 3. Maak een image van de container
 
-Maak vervolgens een image van die container. Vervang `CONTAINER-ID` door
-het gekopieerde ID:
+Maak vervolgens een image van die container met zijn naam:
 
 ```powershell
-docker commit CONTAINER-ID ubuntu-apache2-php
+docker commit php-install ubuntu-apache2-php
 ```
 
 `ubuntu-apache2-php` is de imagenaam en krijgt standaard de tag `latest`.
